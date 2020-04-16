@@ -1,0 +1,175 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<iostream>
+using namespace std;
+
+typedef struct time
+{
+	int hour,minute,second;
+}Time[100];
+
+typedef struct Point
+{
+	float x,y;
+}Point;
+
+typedef struct information
+{
+	Time T;
+	float height;
+	Point P;
+	float speed;
+	float temp;
+	int flag;
+}Infor;
+
+int Scan(Infor &E,int n)
+{
+	int i;
+	//cout<<"请输入收集到的时间（时分秒均为两位，输入时无需符号隔开）:"<<endl;
+	printf("请输入收集到的时间（时分秒均为两位，输入时无需符号隔开）:\n");
+	for(i=0;i<n;i++)
+	{
+		scanf("%d %d %d",&E.T[i].hour,&E.T[i].minute,&E.T[i].second);
+	}
+	//cout<<"请输入收集到的目标高度:"<<endl;
+	printf("请输入收集到的目标高度:\n");
+	cin>>E.height;
+	//cout<<"请输入收集到的目标经纬度"<<endl;
+	printf("请输入收集到的目标经纬度:\n");
+	cin>>E.P.x>>E.P.y;
+	//cout<<"请输入收集到的目标速度"<<endl;
+	printf("请输入收集到的目标速度:\n");
+	cin>>E.speed;
+	//cout<<"请输入收集到的目标温度"<<endl;
+	printf("请输入收集到的目标温度:");
+	cin>>E.temp;
+	return 1;
+}
+
+
+int judge(Infor E,int n)
+{
+	int i,j;
+	if((E.T[j].hour>E.T[j+1].hour&&E.T[j].minute>E.T[j+1].minute&&E.T[j].second>E.T[j+1].second)||(E.T[j].hour>E.T[j+1].hour&&E.T[j].minute>E.T[j+1].minute&&E.T[j].second==E.T[j+1].second)||(E.T[j].hour>E.T[j+1].hour&&E.T[j].minute==E.T[j+1].minute&&E.T[j].second>E.T[j+1].second)||(E.T[j].hour==E.T[j+1].hour&&E.T[j].minute>E.T[j+1].minute&&E.T[j].second>E.T[j+1].second)||(E.T[j].hour>E.T[j+1].hour&&E.T[j].minute==E.T[j+1].minute&&E.T[j].second==E.T[j+1].second)||(E.T[j].hour==E.T[j+1].hour&&E.T[j].minute>E.T[j+1].minute&&E.T[j].second==E.T[j+1].second)||(E.T[j].hour==E.T[j+1].hour&&E.T[j].minute==E.T[j+1].minute&&E.T[j].second>E.T[j+1].second))
+	{
+		return 1;
+	}
+	else
+		return 0;
+}
+
+
+
+
+int order1(Infor E,int n)
+{
+	int i,j;
+	Time t;
+	for(i=0;i<n-1;j++)
+	{
+		for(j=0;j<n-1-i;j++)
+		{
+			if(judge(E,n))
+			{
+				t[0]=E.T[j];
+				E.T[j]=E.T[j+1];
+				E.T[j+1]=t[0];
+			}
+		}
+	}
+	return 0;
+}
+
+
+
+
+int show(int n,Infor E)
+{
+	int flag;
+	while(1)
+	{
+		//cout<<"请输入数字来查看您要查看的内容，1代表查看目标时间，2代表查看目标高度，3代表目标经纬度，4代表目标速度，5代表目标温度，6代表所有信息展示，7代表退出程序";
+		printf("请输入数字来查看您要查看的内容，1代表查看目标时间，2代表查看目标高度，3代表目标经纬度，4代表目标速度，5代表目标温度，6代表所有信息展示，7代表退出程序\n");
+		scanf("%d",&flag);
+		if(flag==1)
+	    {
+		    //cout<<"收集到的目标时间，按照由早到晚的顺序排列依次为："<<endl;
+		    printf("收集到的目标时间，按照由早到晚的顺序排列依次为:\n");
+			for(int i=0;i<n;i++)
+		    {
+			    cout<<E.T[i].hour<<":"<<E.T[i].minute<<":"<<E.T[i].second<<endl;
+			}
+	    }
+	    else if(flag==2)
+	    {
+		    //cout<<"收集到的目标高度为："<<endl;
+		    printf("收集到的目标高度为:\n");
+			cout<<E.height<<"千米"<<endl;
+	    }
+	    else if(flag==3)
+	    {
+		    //cout<<"收集到的目标经纬度分别为："<<endl;
+		    printf("收集到的目标经纬度分别为:\n");
+			cout<<E.P.x<<'° '<<E.P.y<<'° '<<endl;
+	    }
+	    else if(flag==4)
+	    {
+		    //cout<<"收集到的目标速度为："<<endl;
+		    printf("收集到的目标速度为:\n");
+			cout<<E.speed<<endl;
+	    }
+	    else if(flag==5)
+	    {
+		    //cout<<"收集到的目标温度为："<<endl;
+		    printf("收集到的目标温度为:\n");
+			cout<<E.temp<<endl;
+	    }
+	    else if(flag==6)
+	    {
+		    //cout<<"收集到的目标时间，按照由早到晚的顺序排列依次为："<<endl;
+		    printf("收集到的目标时间，按照由早到晚的顺序排列依次为:");
+			for(int i=0;i<n;i++)
+		    {
+			    cout<<E.T[i].hour<<":"<<E.T[i].minute<<":"<<E.T[i].second<<endl;
+		    }
+		    //cout<<"收集到的目标高度为："<<endl;
+		    printf("收集到的目标高度为:");
+			cout<<E.height<<"千米"<<endl;
+		    //cout<<"收集到的目标经纬度分别为："<<endl;
+		    
+			cout<<E.P.x<<'° '<<E.P.y<<'° '<<endl;
+		    cout<<"收集到的目标速度为："<<endl;
+		    cout<<E.speed<<endl;
+		    cout<<"收集到的目标温度为："<<endl;
+		    cout<<E.temp<<endl;
+	    }
+		else if(flag==7)
+		{
+			break;
+		}
+		else
+		{
+			//cout<<"您输入的数字有误，请输入数字1~7";
+			printf("您输入的数字有误，请输入数字1~7\n");
+		}
+	}
+	return 0;
+}
+
+	
+int main()
+{
+	//cout<<"--------***********  你好   ***********--------"<<endl;
+	printf("--------***********  欢迎来到信息统计系统   ***********--------\n");
+	int n;
+	//cout<<"请输入收集的时间个数"<<endl;
+	printf("请输入收集的时间个数\n");
+	cin>>n;
+	Infor e;
+	Scan(e,n);
+	order1(e,n);
+	show(n,e);
+	return 0;
+}
