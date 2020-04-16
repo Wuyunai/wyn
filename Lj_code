@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include<iostream>
+using namespace std;
+#define MAX 200
+#define Path "D:\\student.txt"
+typedef struct Student{
+	char Num[MAX];//学号
+	int Sumofscore;//成绩总和
+	int professionalcource;//专业课
+	int Math;//数学
+	int English;//英语
+	int politics;//政治
+}Stu;
+void Menu(int n)//菜单
+{
+    printf("********************************************************************************************************\n\n");
+    printf("***********************************欢迎进入研究生招生考试成绩排序系统***********************************\n\n");
+	printf("                                   已从文件D:\\student.txt中读取了%d组数据                     \n\n",n);
+	printf("                                   请选择您想实现的操作:                                       \n\n");
+	printf("                                   1 输入优先排序的科目                                        \n\n");
+	printf("                                   2 退出                                                      \n");
+}
+void Output(int n,Stu *p[MAX],Stu a[MAX])//输出
+{
+    Stu t;
+    char c;
+    int i,j,min;
+    scanf("%c",&c);
+    scanf("%d",&min);
+    printf("\n按上述规则排序的成绩如下：\n\n");
+    printf("学号\t总分\t专业\t数学\t英语\t政治\n\n");
+    for(j=0;j<n-1;j++)//总分
+	{
+		for(i=0;i<n-1-j;i++)
+		{
+			if(p[i]->Sumofscore< p[i+1]->Sumofscore)
+			{
+				t= a[i];
+				a[i]= a[i+1];
+				a[i+1]=t;
+			}
+		}
+	}
+    if(c=='c')//专业课
+    for(j=0;j<n-1;j++)
+	for (i=0;i<n-j-1;i++)
+	{
+		// 对结构体数组进行n-1次的冒泡排序
+		if((p[i]->Sumofscore == p[i+1]->Sumofscore))
+		{
+			// 如果总分相等执行下面语句
+			if(p[i]->professionalcource< p[i+1]->professionalcource)
+			{
+				// 前面一位的专业课成绩要小于后面一位的专业课成绩
+				// 则将这两个人的位置互换
+				t=a[i];
+				a[i]=a[i+1];
+				a[i+1]=t;
+			}
+		}
+	}
+	if(c=='m')//数学
+    for(j=0;j<n-1;j++)
+	for(i=0;i<n-j-1;i++)
+			if((p[i]->Sumofscore ==p[i+1]->Sumofscore))
+			{
+				if(p[i]->Math<p[i+1]->Math)
+				{
+					// 如果前一位的数学成绩比后一位的数学成绩小，则互换位置
+					t=a[i];
+					a[i]=a[i+1];
+					a[i+1]=t;
+				}
+			}
+    if(c=='e')//英语
+    for(j=0;j<n-1;j++)
+	for (i=0;i<n-j-1;i++)
+	{
+		// 对结构体数组进行n-1次的冒泡排序
+		if((p[i]->Sumofscore == p[i+1]->Sumofscore))
+				{
+					if(p[i]->English<p[i+1]->English)
+					{
+						//分析同理
+						t=a[i] ;
+						a[i]=a[i+1];
+						a[i+1]=t;
+					}
+				}
+	}
+    if(c=='p')//政治
+    for(j=0;j<n-1;j++)
+	for (i=0;i<n-j-1;i++)
+	{
+		if((p[i]->Sumofscore == p[i+1]->Sumofscore))
+					{
+
+						if(p[i]->politics<p[i+1]->politics)
+						{
+							t=a[i];
+							a[i]=a[i+1];
+							a[i+1]= t;
+						}
+					}
+    }
+	/*printf("\n按上述规则排序的成绩如下：\n\n");
+    printf("学号\t总分\t专业\t数学\t英语\t政治\n\n"); // 简单的ui界面*/
+	for(j=0;j<n;j++)
+	{
+        if(c=='c'&&a[j].professionalcource>=min)
+        {
+            printf("%s\t%d\t%d\t%d\t%d\t%d\n",a[j].Num,a[j].Sumofscore,a[j].professionalcource,a[j].Math,a[j].English,a[j].politics);
+            //如果专业课成绩大于输入的最低分则输出
+        }
+        if(c=='m'&&a[j].Math>=min)
+        {
+            printf("%s\t%d\t%d\t%d\t%d\t%d\n",a[j].Num,a[j].Sumofscore,a[j].professionalcource,a[j].Math,a[j].English,a[j].politics);
+		     //如果数学成绩大于输入的最低分则输出
+        }
+        if(c=='e'&&a[j].English>=min)
+        {
+            printf("%s\t%d\t%d\t%d\t%d\t%d\n",a[j].Num,a[j].Sumofscore,a[j].professionalcource,a[j].Math,a[j].English,a[j].politics);
+		    //如果英语成绩大于输入的最低分则输出
+        }
+        if(c=='p'&&a[j].politics>=min)
+        {
+            printf("%s\t%d\t%d\t%d\t%d\t%d\n",a[j].Num,a[j].Sumofscore,a[j].professionalcource,a[j].Math,a[j].English,a[j].politics);
+		    //如果政治成绩大于输入的最低分则输出
+        }
+	}
+	printf("\n\n******************************************感谢您的使用！******************************************\n\n");
+}
+int main()
+{
+	Stu *p[MAX];// p 是一个指针数组,它是个数组,只是数组的每一个元素
+	Stu a[MAX];// 定义一个结构体数组，每一个元素都是一个结构体变量
+	FILE *fp ;
+	int i=0,n=0;
+	if((fp =fopen(Path,"r"))==NULL)
+	{
+		printf("cannot open this file\n");
+		exit(0 );
+	}
+	while(!feof(fp))//只要没读取到文件最后,就一直循环
+	{
+		fscanf(fp,"%s %d %d %d %d %d",a[i].Num ,&a[i].Sumofscore ,&a[i].professionalcource,&a[i].Math ,&a[i].English ,&a[i].politics);
+		// 从文件中分别读取文件中的第一个赋给a[i].Num ,第二个赋值给a[i].Sumscore，以此类推
+		p[i]=&a[i] ;//* p[0] 存储a[0]的地址,也就是我们常说的p[0]指向a[0]，p[1]指向存储a[1]的地址，以此类推
+		i++;
+	}
+	n=i;//n表示学生个数
+	rewind(fp);//使文件指针重新指向第一个字节
+	while(1)
+    {
+	Menu(n);
+	int x;
+	cin>>x;
+	if(x==1)
+    {
+    printf("\n请输入你想选择的优先排序的科目的首字母和最低分\n\n“c”代表专业课\n\n“m”代表数学\n\n“e”代表英语\n\n“p”代表政治\n\n");
+    }
+    else if(x==2){return 0;}
+	Output(n,p,a);
+    system("pause");
+    system("cls");
+    }
+    return 0;//程序结束
+}
